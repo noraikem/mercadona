@@ -2,6 +2,14 @@
 
 {% block content %}
 <h1> CATALOGUE </h1>
+<form method="get" action="{% url 'catalog' %}">
+    {{ filter_form }}
+    <button type="submit">Filtrer</button>
+</form>
+
+{%if user.is_authenticated %}
+<a href="{% url 'add_product' %}">Ajouter un nouveau produit</a>
+{%endif%}
 
 {% for product in products%}
     <h2> {{ product.name }}</h2>

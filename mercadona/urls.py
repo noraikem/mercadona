@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from store.views import index, product_detail, catalog, promotion_view
+from store.views import index, product_detail, catalog, promotion_view, add_product
 from accounts.views import logout_admin, login_admin
 
 from mercadona import settings
@@ -30,4 +30,7 @@ urlpatterns = [
     path('product/<str:slug>/', product_detail, name='product'),
     path('catalog', catalog, name='catalog'),
     path('product/<str:slug>/appliquer-promotion/', promotion_view, name='promotion_view'),
-    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('add_product/', add_product, name='add_product'),
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+

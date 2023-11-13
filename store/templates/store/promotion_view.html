@@ -3,7 +3,13 @@
 {% block content %}
 
     <h2>{{ product.name }}</h2>
-    <h3>€{{ product.price }}</h3>
+    <h3>
+        {% if product.promotion %}
+      <span class="promo-price"><strong>{{ product.promo_price }}€</strong></span>
+            {% else %}
+        {{ product.price }}€
+        {% endif %}
+    </h3>
     <img src="{{ product.thumbnail.url }}" alt="{{ product.name }}" style="max-width: 250px;">
     <p>{{ product.description }}</p>
     <p>{{ product.category }}</p>
@@ -16,15 +22,11 @@
       <button type="submit">Appliquer la promotion</button>
   </form>
 
-    <script>
-    document.getElementById('id_pourcentage_promo').addEventListener('input', function() {
-      let currentPrice = parseFloat(document.getElementById('current-price').textContent);
-      let pourcentagePromo = parseFloat(this.value);
 
-      if (!isNaN(currentPrice) && !isNaN(pourcentagePromo)) {
-        let reducedPrice = currentPrice - (currentPrice * pourcentagePromo / 100);
-        document.getElementById('current-price').textContent = reducedPrice.toFixed(2);
-      }
-    });
-  </script>
+  <p>
+    {% if product.promotion %}
+      <span class="promo-price"><strong>{{ product.promo_price }}</strong></span>
+    {% endif %}
+  </p>
+
 {% endblock %}
