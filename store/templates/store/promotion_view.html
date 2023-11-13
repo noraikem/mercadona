@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h2>{{ product.name }}</h2>
+    <h3>€{{ product.price }}</h3>
+    <img src="{{ product.thumbnail.url }}" alt="{{ product.name }}" style="max-width: 250px;">
+    <p>{{ product.description }}</p>
+    <p>{{ product.category }}</p>
+
+  <h2>Appliquer une promotion à {{ product.name }}</h2>
+  
+  <form method="post" action="{% url 'promotion_view' slug=product.slug %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Appliquer la promotion</button>
+  </form>
+
+    <script>
+    document.getElementById('id_pourcentage_promo').addEventListener('input', function() {
+      let currentPrice = parseFloat(document.getElementById('current-price').textContent);
+      let pourcentagePromo = parseFloat(this.value);
+
+      if (!isNaN(currentPrice) && !isNaN(pourcentagePromo)) {
+        let reducedPrice = currentPrice - (currentPrice * pourcentagePromo / 100);
+        document.getElementById('current-price').textContent = reducedPrice.toFixed(2);
+      }
+    });
+  </script>
+{% endblock %}

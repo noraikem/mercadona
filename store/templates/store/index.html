@@ -1,0 +1,13 @@
+{%  extends 'base.html' %}
+
+{% block content %}
+<div id="menu">
+  <ul id="onglets">
+    <li class="active"><a href="{% url 'index' %}"> Accueil </a></li>
+    <li><a href="{% url 'catalog' %}"> Catalogue </a></li>
+    <li><a href="Inscription.html"> S'inscrire </a></li>
+    <li><a href="Connexion.html"> Se connecter </a></li>
+  </ul>
+</div>
+
+{% endblock %}
