@@ -1,5 +1,7 @@
+import os
+
 import dj_database_url
-from django.conf.global_settings import DATABASES
+import psycopg2
 from dotenv import load_dotenv
 
 """
@@ -25,6 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-3!9&w@up4&-l$$o%ggv6l^j4e8_ukwlfqt_n7!qhq15^flhza&'
+
+
+IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -79,16 +84,20 @@ WSGI_APPLICATION = 'mercadona.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-if str(BASE_DIR).startswith('/app'):  # Le répertoire de base sur Heroku
-    ENVIRONMENT = 'production'
+if IS_HEROKU_APP:
+    DATABASES = {
+        "default": dj_database_url.config(
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True,
+        ),
+    }
 else:
-    ENVIRONMENT = 'development'
-
-# Configuration de la base de données locale
-if ENVIRONMENT == 'development':
+    # When running locally in development or in CI, a sqlite database file will be used instead
+    # to simplify initial setup. Longer term it's recommended to use Postgres locally too.
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'test',
             'USER': 'postgres',
             'PASSWORD': ' ',
@@ -96,12 +105,6 @@ if ENVIRONMENT == 'development':
             'PORT': '5432',
         }
     }
-
-# Configuration de la base de données Heroku en production
-elif ENVIRONMENT == 'production':
-    db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
-    DATABASES['default'].update(db_from_env)
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -148,3 +151,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 AUTH_USER_MODEL = "accounts.Shopper"
+
