@@ -79,8 +79,28 @@ WSGI_APPLICATION = 'mercadona.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
-DATABASES['default'].update(db_from_env)
+if str(BASE_DIR).startswith('/app'):  # Le répertoire de base sur Heroku
+    ENVIRONMENT = 'production'
+else:
+    ENVIRONMENT = 'development'
+
+# Configuration de la base de données locale
+if ENVIRONMENT == 'development':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'test',
+            'USER': 'postgres',
+            'PASSWORD': ' ',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
+
+# Configuration de la base de données Heroku en production
+elif ENVIRONMENT == 'production':
+    db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
+    DATABASES['default'].update(db_from_env)
 
 
 # Password validation
