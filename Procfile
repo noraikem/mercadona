@@ -1,1 +1,1 @@
-web: gunicorn wsgi:mercadona
+web: gunicorn mercadona.wsgi:application
