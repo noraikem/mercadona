@@ -1,3 +1,7 @@
+import dj_database_url
+from django.conf.global_settings import DATABASES
+from dotenv import load_dotenv
+
 """
 Django settings for mercadona project.
 
@@ -25,7 +29,7 @@ SECRET_KEY = 'django-insecure-3!9&w@up4&-l$$o%ggv6l^j4e8_ukwlfqt_n7!qhq15^flhza&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['evening-inlet-53682-0adf37061b51.herokuapp.com']
+ALLOWED_HOSTS = ['mercadona-projet-c09f88ec7478.herokuapp.com','127.0.0.1']
 
 
 # Application definition
@@ -75,16 +79,8 @@ WSGI_APPLICATION = 'mercadona.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'test',
-        'USER': 'postgres',
-        'PASSWORD': ' ',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+db_from_env = dj_database_url.config(conn_max_age=600, ssl_require=True)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
