@@ -32,6 +32,7 @@ class Product(models.Model):
         choices=CATEGORY_CHOICES,
         default=None,
     )
+    promotion = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name

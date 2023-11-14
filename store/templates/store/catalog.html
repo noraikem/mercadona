@@ -1,24 +1,36 @@
-{%  extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
-<h1> CATALOGUE </h1>
-<form method="get" action="{% url 'catalog' %}">
-    {{ filter_form }}
-    <button type="submit">Filtrer</button>
-</form>
+<div class="container mt-5">
+    <h1 class="mb-4">CATALOGUE</h1>
 
-{%if user.is_authenticated %}
-<a href="{% url 'add_product' %}">Ajouter un nouveau produit</a>
-{%endif%}
+    <form method="get" action="{% url 'catalog' %}">
+        {{ filter_form }}
+        <button type="submit" class="btn btn-primary">Filtrer</button>
+    </form>
 
-{% for product in products%}
-    <h2> {{ product.name }}</h2>
-    <img src="{{ product.thumbnail.url }}" alt="{{ product.name }}" style="max-width: 250px;">
-    {%if user.is_authenticated %}
-    <a href="{% url 'product' slug=product.slug %}"> Voir l'article </a>
-    <h3>€{{ product.price }}</h3>
+    {% if user.is_authenticated %}
+        <div class="d-flex justify-content-end mb-4 mt-4">
+            <a href="{% url 'add_product' %}" class="btn btn-success">Ajouter un nouveau produit</a>
+        </div>
     {% endif %}
 
-{% endfor %}
-
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4 mb-4">
+                <div class="card {% if product.in_promotion %}bg-danger text-white{% endif %}">
+                    <img src="{{ product.thumbnail.url }}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.price }} €</p>
+                        <pclass="card-text"> Description : {{ product.description }}</p>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'product' slug=product.slug %}" class="btn btn-primary">Voir l'article</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

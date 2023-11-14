@@ -31,6 +31,6 @@ urlpatterns = [
     path('catalog', catalog, name='catalog'),
     path('product/<str:slug>/appliquer-promotion/', promotion_view, name='promotion_view'),
     path('add_product/', add_product, name='add_product'),
-    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
