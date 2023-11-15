@@ -22,8 +22,9 @@
                     <img src="{{ product.thumbnail.url }}" class="card-img-top" alt="{{ product.name }}">
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="card-text">{{ product.price }} €</p>
-                        <pclass="card-text"> Description : {{ product.description }}</p>
+                    <span class="badge bg-primary">{{ product.get_category_display }}</span>
+                    <p class="card-text {{ product.price_style }}">{{ product.price }} €</p>
+                        <p class="card-text"> Description : {{ product.description }}</p>
                         {% if user.is_authenticated %}
                             <a href="{% url 'product' slug=product.slug %}" class="btn btn-primary">Voir l'article</a>
                         {% endif %}

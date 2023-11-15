@@ -1,9 +1,10 @@
+from _decimal import Decimal
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
 from store.forms import PromotionForm, ProductFilterForm
-from store.models import Product
+from store.models import Product, Promotion
 
 from .forms import ProductForm
 
@@ -42,14 +43,20 @@ def promotion_view(request, slug):
             promotion_start_date = form.cleaned_data['promotion_start_date']
             promotion_end_date = form.cleaned_data['promotion_end_date']
 
-            current_date = timezone.now().date()
-            if promotion_start_date <= current_date <= promotion_end_date:
-                nouveau_prix = product.price - (product.price * pourcentage_promo / 100)
-                product.price = nouveau_prix
-                product.save()
-                return redirect('promotion_view', slug=product.slug)
-            else:
-                return HttpResponse("La promotion n'est pas actuellement valide.")
+            # Créez une instance de Promotion associée au produit actuel
+            promotion = Promotion.objects.create(
+                product=product,
+                pourcentage_promo=pourcentage_promo,
+                promotion_start_date=promotion_start_date,
+                promotion_end_date=promotion_end_date
+            )
+            product_price = Decimal(str(product.price))
+
+            nouveau_prix = product_price - (product_price * pourcentage_promo / 100)
+            product.price = nouveau_prix
+            product.save()
+            return redirect('promotion_view', slug=product.slug)
+
     else:
         form = PromotionForm()
 
@@ -61,7 +68,7 @@ def add_product(request):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             new_product = form.save()
-            return redirect('catalog')  # Redirigez l'utilisateur vers la page du catalogue après l'ajout.
+            return redirect('catalog')
     else:
         form = ProductForm()
 

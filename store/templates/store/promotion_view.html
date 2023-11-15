@@ -2,31 +2,40 @@
 
 {% block content %}
 
-    <h2>{{ product.name }}</h2>
-    <h3>
-        {% if product.promotion %}
-      <span class="promo-price"><strong>{{ product.promo_price }}€</strong></span>
-            {% else %}
-        {{ product.price }}€
-        {% endif %}
-    </h3>
-    <img src="{{ product.thumbnail.url }}" alt="{{ product.name }}" style="max-width: 250px;">
-    <p>{{ product.description }}</p>
-    <p>{{ product.category }}</p>
-
-  <h2>Appliquer une promotion à {{ product.name }}</h2>
-  
-  <form method="post" action="{% url 'promotion_view' slug=product.slug %}" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Appliquer la promotion</button>
-  </form>
-
-
-  <p>
-    {% if product.promotion %}
-      <span class="promo-price"><strong>{{ product.promo_price }}</strong></span>
-    {% endif %}
-  </p>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>{{ product.name }}</h2>
+                            <p class="lead">{{ product.description }}</p>
+            <h3 class="display-4">{{ product.price }} €</h3>
+            <img src="{{ product.thumbnail.url }}" alt="{{ product.name }}" style="max-width: 250px;">
+                <p><span class="badge bg-primary">{{ product.get_category_display }}</span></p>
+        </div>
+        <div class="col-md-4">
+            <h2>Appliquer une promotion à {{ product.name }}</h2>
+            <form method="post" action="{% url 'promotion_view' slug=product.slug %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.pourcentage_promo.label_tag }}
+                    {{ form.pourcentage_promo }}
+                </div>
+                <div class="mb-3">
+                    {{ form.promotion_start_date.label_tag }}
+                    {{ form.promotion_start_date }}
+                </div>
+                <div class="mb-3">
+                    {{ form.promotion_end_date.label_tag }}
+                    {{ form.promotion_end_date }}
+                </div>
+                <button type="submit" class="btn btn-primary">Appliquer la promotion</button>
+            </form>
+            <p>
+                {% if product.promotion %}
+                    <span class="promo-price"><strong>{{ product.promo_price }}</strong></span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
