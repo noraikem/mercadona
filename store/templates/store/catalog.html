@@ -1,8 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <h1 class="mb-4">CATALOGUE</h1>
+
+<div class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Catalogue</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Decouvrez tous nos articles ! </p>
+                </div>
+            </div>
+</div>
+
+<div class="container mt-5 ">
+
 
     <form method="get" action="{% url 'catalog' %}">
         {{ filter_form }}
@@ -26,7 +36,7 @@
                     <p class="card-text {{ product.price_style }}">{{ product.price }} €</p>
                         <p class="card-text"> Description : {{ product.description }}</p>
                         {% if user.is_authenticated %}
-                            <a href="{% url 'product' slug=product.slug %}" class="btn btn-primary">Voir l'article</a>
+                            <a href="{% url 'product' slug=product.slug %}" class="btn btn-outline-dark">Voir l'article</a>
                         {% endif %}
                     </div>
                 </div>

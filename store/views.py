@@ -43,20 +43,15 @@ def promotion_view(request, slug):
             promotion_start_date = form.cleaned_data['promotion_start_date']
             promotion_end_date = form.cleaned_data['promotion_end_date']
 
-            # Créez une instance de Promotion associée au produit actuel
-            promotion = Promotion.objects.create(
-                product=product,
-                pourcentage_promo=pourcentage_promo,
-                promotion_start_date=promotion_start_date,
-                promotion_end_date=promotion_end_date
-            )
-            product_price = Decimal(str(product.price))
+            current_date = timezone.now().date()
+            if promotion_start_date and promotion_start_date <= current_date <= promotion_end_date:
+                product.save()
 
-            nouveau_prix = product_price - (product_price * pourcentage_promo / 100)
-            product.price = nouveau_prix
-            product.save()
+                nouveau_prix = product.price - (product.price * pourcentage_promo / 100)
+                product.price = nouveau_prix
+                product.save()
+
             return redirect('promotion_view', slug=product.slug)
-
     else:
         form = PromotionForm()
 

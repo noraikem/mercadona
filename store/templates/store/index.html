@@ -1,29 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <style>
-        .fixed-height {
-            height: 300px;
-            object-fit: cover;
-        }
-    </style>
 
-    <div id="demo" class="carousel slide mt-5" data-ride="carousel">
-        <ul class="carousel-indicators">
-            {% for product in products %}
-            <li data-target="#demo" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}></li>
-            {% endfor %}
-        </ul>
-        <div class="carousel-inner">
-            {% for product in products %}
-            <div class=" mt-5 carousel-item {% if forloop.first %}active{% endif %}">
-                <img src="{{ product.thumbnail.url }}" alt="{{ product.name }}" class="d-block w-100 img-fluid fixed-height">
-                <div class="carousel-caption d-none d-md-block">
-                </div>
+ <div class="masthead text-center h-1">
+            <div class="container d-flex align-items-center flex-column">
+                <a href="{% url 'index' %}" class="logo-container"><img src="/media/Mercadona.png" alt="MERCADONA" style="max-width: 1000px;"></a>
+
+                <h3 class="masthead-subheading font-weight-light mb-0">Accedez plus facilement à nos produits en promotion !</h3>
+
             </div>
-            {% endfor %}
         </div>
-    </div>
+<div>
+    <br><br><br><br><br><br>
+
 </div>
 {% endblock %}

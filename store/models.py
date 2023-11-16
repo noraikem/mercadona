@@ -61,8 +61,12 @@ class Promotion(models.Model):
 
     def __str__(self):
         return f" {self.product.name} (-{self.pourcentage_promo}%)"
+
     def is_active(self):
         current_date = timezone.now().date()
+        if self.promotion_start_date:
+            if self.promotion_start_date <= current_date:
+                return not self.promotion_end_date or self.promotion_end_date >= current_date
         if self.promotion_start_date is None or self.promotion_end_date is None:
             return True
         return self.promotion_start_date <= current_date <= self.promotion_end_date
