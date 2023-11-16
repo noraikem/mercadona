@@ -1,15 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Ajouter un nouveau produit</h2>
+  <div class=" bg-dark ">
+    <div class="row py-5">
+      <div class="col-md-6 offset-md-3 bg-light py-5 ">
+        <h2 class="mt-4 mb-4">Ajouter un nouveau produit</h2>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="id_name" class="form-label">Nom du produit</label>
+            {{ form.name }}
+          </div>
+          <div class="mb-3">
+            <label for="id_description" class="form-label">Description</label>
+            {{ form.description }}
+          </div>
+          <div class="mb-3">
+            <label for="id_price" class="form-label">Prix</label>
+            {{ form.price }} €
+          </div>
+          <div class="mb-3">
+            <label for="id_thumbnail" class="form-label">Image</label>
+            {{ form.thumbnail }}
+          </div>
+          <div class="mb-3">
+            <label for="id_category" class="form-label">Catégorie</label>
+            {{ form.category }}
+          </div>
+          <button type="submit" class="btn btn-primary">Ajouter le produit</button>
+        </form>
+        <a href="{% url 'catalog' %}" class="btn btn-secondary mt-3">Retour au catalogue</a>
+      </div>
+    </div>
+  </div>
+    <br>    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
 
-    {{ form.as_p }}
 
-    <button type="submit">Ajouter le produit</button>
-  </form>
-
-  <a href="{% url 'catalog' %}">Retour au catalogue</a>
 {% endblock %}

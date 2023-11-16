@@ -1,4 +1,5 @@
-
+from _decimal import Decimal
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
@@ -17,7 +18,7 @@ def index(request):
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
-    return render(request, 'store/detail.html', context={"product": product})
+    return render(request, 'store/detail.html', context={"product": product, "price_style": product.price_style()})
 
 
 def catalog(request):
