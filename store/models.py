@@ -52,6 +52,9 @@ class Product(models.Model):
     def price_style(self):
         return 'text-danger font-weight-bold' if self.promotion_active else ''
 
+    def get_rounded_price(self):
+        return round(self.price, 2)
+
 
 class Promotion(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

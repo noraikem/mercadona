@@ -21,14 +21,6 @@ class PromotionForm(ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-        start_date = cleaned_data.get("promotion_start_date")
-        end_date = cleaned_data.get("promotion_end_date")
-
-        if start_date and end_date:
-            if start_date > end_date:
-                raise forms.ValidationError("La date de fin doit être postérieure à la date de début.")
-            if end_date < timezone.now().date():
-                raise forms.ValidationError("La date de fin ne peut pas être antérieure à la date actuelle.")
         return cleaned_data
 
 
